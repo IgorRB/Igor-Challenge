@@ -89,7 +89,7 @@ SphereCollider:
   m_GameObject: {fileID: 1199328107998197497}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -142,7 +142,11 @@ MonoBehaviour:
   playerNum: 1
   myTile: {fileID: 0}
   hp: 10
-  atk: 2
+  atk: 10
+  bonusAtk: 0
+  d8s: 0
+  atkAdvantage: 0
+  defAdvantage: 0
   attacked: 0
   steps: 3
 --- !u!1 &7128869775724409486

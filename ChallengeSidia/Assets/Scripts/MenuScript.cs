@@ -36,8 +36,8 @@ public class MenuScript : MonoBehaviour
             if (y > 32) y = 32;
         }
 
-        gi.boardX = x;
-        gi.boardY = y;
+        gi.gridX = x;
+        gi.gridY = y;
         gi.multiplayer = true;
 
         SceneManager.LoadScene("GameScene");

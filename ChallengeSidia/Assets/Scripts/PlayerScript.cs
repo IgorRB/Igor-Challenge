@@ -9,7 +9,8 @@ public class PlayerScript : MonoBehaviour
     public int playerNum = 1;
     public TileScript myTile;
 
-    public int hp = 10, atk = 2;
+    public int hp = 10, atk = 2, bonusAtk = 0, d8s = 0;
+    public bool atkAdvantage = false, defAdvantage = false;
 
     public bool attacked = false;
     public int steps = 3;
@@ -24,5 +25,12 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ClearPowerUps()
+    {
+        bonusAtk = 0;
+        d8s = 0;
+        atkAdvantage = false;
     }
 }
