@@ -8,5 +8,7 @@ public class SOgameInfo : ScriptableObject
     public int gridX = 16, gridY = 16;
 
     public bool multiplayer = false;
+
+    public float musicVol=0.666f, effectsVol=1f;
     
 }

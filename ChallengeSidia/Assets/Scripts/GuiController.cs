@@ -221,11 +221,13 @@ public class GuiController : MonoBehaviour
             if(p1wins >= p2wins)
             {
                 battleResultText.text = "Player 1 won!";
+                gc.audios[1].PlayAudio(3);
                 gc.DealDamage(gc.player1.GetComponent<PlayerScript>(), gc.player2.GetComponent<PlayerScript>());
             }
             else
             {
                 battleResultText.text = "Player 2 won!";
+                gc.audios[1].PlayAudio(2);
                 gc.DealDamage(gc.player2.GetComponent<PlayerScript>(), gc.player1.GetComponent<PlayerScript>());
             }
         }
@@ -234,11 +236,13 @@ public class GuiController : MonoBehaviour
             if (p2wins >= p1wins)
             {
                 battleResultText.text = "Player 2 won!";
+                gc.audios[1].PlayAudio(2);
                 gc.DealDamage(gc.player2.GetComponent<PlayerScript>(), gc.player1.GetComponent<PlayerScript>());
             }
             else
             {
                 battleResultText.text = "Player 1 won!";
+                gc.audios[1].PlayAudio(3);
                 gc.DealDamage(gc.player1.GetComponent<PlayerScript>(), gc.player2.GetComponent<PlayerScript>());
             }
         }
@@ -265,5 +269,10 @@ public class GuiController : MonoBehaviour
     public void BackToMenu()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    public void Reload()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }

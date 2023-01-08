@@ -29,6 +29,9 @@ public class GameControllerScript : MonoBehaviour
     public int actions = 3;
     bool battleIsHappening = false;
 
+    [Header("Audio Sources")]
+    public AudioEffectsPlayer[] audios;
+
 
     // Start is called before the first frame update
     void Start()
@@ -195,6 +198,8 @@ public class GameControllerScript : MonoBehaviour
         {
             if (turn % 2 == 1)
             {
+                audios[0].PlayAudio(0);
+
                 UnHighlightTiles(player1);
                 player1.transform.position = board[x, y].gameObject.transform.position;
                 player1.GetComponent<PlayerScript>().myTile.myObj = null;
@@ -222,6 +227,8 @@ public class GameControllerScript : MonoBehaviour
             }
             else if (turn % 2 == 0)
             {
+                audios[0].PlayAudio(0);
+
                 UnHighlightTiles(player2);
                 player2.transform.position = board[x, y].gameObject.transform.position;
                 player2.GetComponent<PlayerScript>().myTile.myObj = null;
@@ -254,32 +261,39 @@ public class GameControllerScript : MonoBehaviour
     {
         if(plr.myTile.myObj != null)
         {
+
             switch (plr.myTile.myObj.GetComponent<PowerUpScript>().effect)
             {
                 case "hp s":
+                    audios[0].PlayAudio(2);
                     plr.hp++;
                     ui.SetHp(plr.playerNum, plr.hp);
                     break;
 
                 case "atk s":
+                    audios[0].PlayAudio(1);
                     plr.bonusAtk++;
                     break;
 
                 case "spd s":
+                    audios[0].PlayAudio(3);
                     actions++;
                     break;
 
                 case "d8":
+                    audios[0].PlayAudio(1);
                     plr.d8s++;
                     if (plr.d8s > 4)
                         plr.d8s = 4;
                     break;
 
                 case "def adv":
+                    audios[0].PlayAudio(1);
                     plr.defAdvantage = true;
                     break;
 
                 case "atk adv":
+                    audios[0].PlayAudio(1);
                     plr.atkAdvantage = true;
                     break;
 
@@ -311,6 +325,8 @@ public class GameControllerScript : MonoBehaviour
             player2.GetComponent<PlayerScript>().ClearPowerUps();
 
             Camera.main.GetComponent<CameraFollowScript>().target = player1.transform;
+            Camera.main.GetComponent<CameraFollowScript>().auto = true;
+
             player1.GetComponent<PlayerScript>().attacked = false;
             ui.p1Atk.gameObject.SetActive(true);
             ui.p2Atk.gameObject.SetActive(false);
@@ -321,6 +337,8 @@ public class GameControllerScript : MonoBehaviour
             player1.GetComponent<PlayerScript>().ClearPowerUps();
 
             Camera.main.GetComponent<CameraFollowScript>().target = player2.transform;
+            Camera.main.GetComponent<CameraFollowScript>().auto = true;
+
             player2.GetComponent<PlayerScript>().attacked = false;
             ui.p2Atk.gameObject.SetActive(true);
             ui.p1Atk.gameObject.SetActive(false);
@@ -373,8 +391,9 @@ public class GameControllerScript : MonoBehaviour
 
     IEnumerator Battle()
     {
-        Debug.Log("Battle!");
-        yield return new WaitForSeconds(1);
+        audios[1].PlayAudio(0);
+
+        yield return new WaitForSeconds(1);        
 
         if (turn % 2 == 1)
             player1.GetComponent<PlayerScript>().attacked = true;
@@ -385,6 +404,7 @@ public class GameControllerScript : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
+        audios[1].PlayAudio(1);
         ui.RollDices();
 
         yield return new WaitForSeconds(3);
@@ -396,9 +416,16 @@ public class GameControllerScript : MonoBehaviour
         ui.EndBattle();
 
         if(player1.GetComponent<PlayerScript>().hp <= 0)
+        {
             ui.PlayerWon(2);
+            audios[1].PlayAudio(4);
+        }            
         else if(player2.GetComponent<PlayerScript>().hp <= 0)
+        {
             ui.PlayerWon(1);
+            audios[1].PlayAudio(4);
+        }
+            
 
         battleIsHappening = false;
         if (actions == 0)
