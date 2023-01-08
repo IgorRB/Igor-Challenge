@@ -36,6 +36,9 @@ public class GameControllerScript : MonoBehaviour
         player1 = Instantiate(playerPrefab, board[1, 1].transform.position, Quaternion.identity);
         player1.GetComponent<PlayerScript>().myTile = board[1, 1].GetComponent<TileScript>();
         player1.GetComponent<PlayerScript>().myTile.myObj = player1;
+
+        Camera.main.GetComponent<CameraFollowScript>().target = player1.transform;
+
         yield return null;
     }
 
