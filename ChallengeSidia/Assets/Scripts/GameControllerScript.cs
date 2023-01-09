@@ -21,16 +21,21 @@ public class GameControllerScript : MonoBehaviour
     int powerUpCount;
 
     [Header("Players")]
-    public GameObject prefPlayer;
+    public GameObject prefPlayer1;
+    public GameObject prefPlayer2;
     public GameObject player1, player2;
 
     [Header("Game Variables")]
     public int turn = 1;
     public int actions = 3;
-    bool battleIsHappening = false;
+    public bool battleIsHappening = false;
+    bool multiplayer = true;
 
     [Header("Audio Sources")]
     public AudioEffectsPlayer[] audios;
+
+    [Header("ParticleEffects")]
+    public GameObject[] particles;
 
 
     // Start is called before the first frame update
@@ -39,6 +44,7 @@ public class GameControllerScript : MonoBehaviour
         gridX = gi.gridX;
         gridY = gi.gridY;
         maxPowerUp = gridX * gridY - 2;
+        multiplayer = gi.multiplayer;
 
         board = new TileScript[gridX, gridY];
 
@@ -66,14 +72,14 @@ public class GameControllerScript : MonoBehaviour
 
     public IEnumerator SpawnPlayers()
     {
-        player1 = Instantiate(prefPlayer, board[1, 1].transform.position, Quaternion.identity);
+        player1 = Instantiate(prefPlayer1, board[1, 1].transform.position, Quaternion.identity);
         player1.GetComponent<PlayerScript>().playerNum = 1;
         player1.GetComponent<PlayerScript>().myTile = board[1, 1];
         player1.GetComponent<PlayerScript>().myTile.myObj = player1;
 
         Camera.main.GetComponent<CameraFollowScript>().target = player1.transform;
 
-        player2 = Instantiate(prefPlayer, board[gridX - 2, gridY - 2].transform.position, Quaternion.identity);
+        player2 = Instantiate(prefPlayer2, board[gridX - 2, gridY - 2].transform.position, Quaternion.identity);
         player2.GetComponent<PlayerScript>().playerNum = 2;
         player2.GetComponent<PlayerScript>().myTile = board[gridX - 2, gridY - 2];
         player2.GetComponent<PlayerScript>().myTile.myObj = player2;
@@ -257,7 +263,7 @@ public class GameControllerScript : MonoBehaviour
         
     }
 
-    void CollectPowerUps(PlayerScript plr)
+    public void CollectPowerUps(PlayerScript plr)
     {
         if(plr.myTile.myObj != null)
         {
@@ -266,34 +272,39 @@ public class GameControllerScript : MonoBehaviour
             {
                 case "hp s":
                     audios[0].PlayAudio(2);
+                    Instantiate(particles[3], plr.transform.position, Quaternion.identity);
                     plr.hp++;
                     ui.SetHp(plr.playerNum, plr.hp);
                     break;
 
                 case "atk s":
                     audios[0].PlayAudio(1);
+                    Instantiate(particles[4], plr.transform.position, Quaternion.identity);
                     plr.bonusAtk++;
                     break;
 
                 case "spd s":
                     audios[0].PlayAudio(3);
+                    Instantiate(particles[1], plr.transform.position, Quaternion.identity);
                     actions++;
                     break;
 
                 case "d8":
-                    audios[0].PlayAudio(1);
+                    audios[0].PlayAudio(4);
                     plr.d8s++;
                     if (plr.d8s > 4)
                         plr.d8s = 4;
                     break;
 
                 case "def adv":
-                    audios[0].PlayAudio(1);
+                    audios[0].PlayAudio(5);
                     plr.defAdvantage = true;
+                    plr.myShield.SetActive(true);
                     break;
 
                 case "atk adv":
-                    audios[0].PlayAudio(1);
+                    audios[0].PlayAudio(6);
+                    Instantiate(particles[2], plr.transform.position, Quaternion.identity);
                     plr.atkAdvantage = true;
                     break;
 
@@ -342,13 +353,19 @@ public class GameControllerScript : MonoBehaviour
             player2.GetComponent<PlayerScript>().attacked = false;
             ui.p2Atk.gameObject.SetActive(true);
             ui.p1Atk.gameObject.SetActive(false);
-            HighlightTiles(player2);
+
+            if(multiplayer)
+                HighlightTiles(player2);
+            else
+            {
+                player2.GetComponent<EnemyController>().StartCoroutine("Step");
+            }
         }
 
         yield return null;
     }
 
-    bool LookForBattle()
+    public bool LookForBattle()
     {
         bool combatAlreadyHappend;
 
@@ -389,7 +406,7 @@ public class GameControllerScript : MonoBehaviour
         return false;
     }
 
-    IEnumerator Battle()
+    public IEnumerator Battle()
     {
         audios[1].PlayAudio(0);
 

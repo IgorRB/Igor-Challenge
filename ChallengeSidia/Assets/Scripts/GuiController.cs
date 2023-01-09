@@ -141,6 +141,7 @@ public class GuiController : MonoBehaviour
                 p1DiceValues.Add(Random.Range(1, 9));
                 p1d8s[4].transform.GetChild(0).gameObject.GetComponent<Text>().text = p1DiceValues[4].ToString();
                 p1.defAdvantage = false;
+                p1.myShield.SetActive(false);
             }
         }
 
@@ -178,6 +179,7 @@ public class GuiController : MonoBehaviour
                 p2DiceValues.Add(Random.Range(1, 9));
                 p2d8s[4].transform.GetChild(0).gameObject.GetComponent<Text>().text = p2DiceValues[4].ToString();
                 p2.defAdvantage = false;
+                p2.myShield.SetActive(false);
             }
         }
     }
@@ -222,11 +224,13 @@ public class GuiController : MonoBehaviour
             {
                 battleResultText.text = "Player 1 won!";
                 gc.audios[1].PlayAudio(3);
+                Instantiate(gc.particles[0], gc.player2.transform.position, Quaternion.identity);
                 gc.DealDamage(gc.player1.GetComponent<PlayerScript>(), gc.player2.GetComponent<PlayerScript>());
             }
             else
             {
                 battleResultText.text = "Player 2 won!";
+                Instantiate(gc.particles[0], gc.player1.transform.position, Quaternion.identity);
                 gc.audios[1].PlayAudio(2);
                 gc.DealDamage(gc.player2.GetComponent<PlayerScript>(), gc.player1.GetComponent<PlayerScript>());
             }
@@ -236,12 +240,14 @@ public class GuiController : MonoBehaviour
             if (p2wins >= p1wins)
             {
                 battleResultText.text = "Player 2 won!";
+                Instantiate(gc.particles[0], gc.player1.transform.position, Quaternion.identity);
                 gc.audios[1].PlayAudio(2);
                 gc.DealDamage(gc.player2.GetComponent<PlayerScript>(), gc.player1.GetComponent<PlayerScript>());
             }
             else
             {
                 battleResultText.text = "Player 1 won!";
+                Instantiate(gc.particles[0], gc.player2.transform.position, Quaternion.identity);
                 gc.audios[1].PlayAudio(3);
                 gc.DealDamage(gc.player1.GetComponent<PlayerScript>(), gc.player2.GetComponent<PlayerScript>());
             }

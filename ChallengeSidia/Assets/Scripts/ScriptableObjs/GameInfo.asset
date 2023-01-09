@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27f0932506039b4e8b5d505305d7a08, type: 3}
   m_Name: GameInfo
   m_EditorClassIdentifier: 
-  boardX: 16
-  boardY: 16
-  multiplayer: 1
+  gridX: 8
+  gridY: 8
+  multiplayer: 0
+  musicVol: 0.666
+  effectsVol: 1

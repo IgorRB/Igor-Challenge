@@ -13,12 +13,13 @@ public class PlayerScript : MonoBehaviour
     public bool atkAdvantage = false, defAdvantage = false;
 
     public bool attacked = false;
-    public int steps = 3;
+
+    public GameObject myShield;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        myShield.SetActive(false);
     }
 
     // Update is called once per frame

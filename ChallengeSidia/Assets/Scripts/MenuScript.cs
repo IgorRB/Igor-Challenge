@@ -10,6 +10,7 @@ public class MenuScript : MonoBehaviour
     public GameObject main;
     public GameObject play;
     public GameObject options;
+    public GameObject info;
 
     public Text tx, ty;
 
@@ -20,6 +21,8 @@ public class MenuScript : MonoBehaviour
     public AudioMixer mixerEffects;
 
     public AudioSource fxAudio;
+
+    public bool multiplayer = true;
 
     private void Start()
     {
@@ -56,7 +59,7 @@ public class MenuScript : MonoBehaviour
 
         gi.gridX = x;
         gi.gridY = y;
-        gi.multiplayer = true;
+        gi.multiplayer = multiplayer;
 
         SceneManager.LoadScene("GameScene");
     }
@@ -67,6 +70,7 @@ public class MenuScript : MonoBehaviour
         main.SetActive(true);
         play.SetActive(false);
         options.SetActive(false);
+        info.SetActive(false);
     }
 
     public void Options()
@@ -74,6 +78,13 @@ public class MenuScript : MonoBehaviour
         fxAudio.Play();
         main.SetActive(false);
         options.SetActive(true);
+    }
+
+    public void Info()
+    {
+        fxAudio.Play();
+        main.SetActive(false);
+        info.SetActive(true);
     }
 
     public void Quit()
@@ -92,5 +103,10 @@ public class MenuScript : MonoBehaviour
     {
         mixerEffects.SetFloat("EffectsVol", Mathf.Log10(value) * 20);
         gi.effectsVol = value;
+    }
+
+    public void SetMultiplayer(bool value)
+    {
+        multiplayer = value;
     }
 }
